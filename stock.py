@@ -32,7 +32,11 @@ class stocktickercom(db.Model):
 def index():
     #result=stocktickercom.query.all()
     result=stocktickercom.query.order_by(func.random())
-    tick=result[0].ticker
+    if not result:
+        tick='AMZN'
+    else:
+        tick=result[0].ticker
+        
     stockdt,success=getstockdata.getstockdata(tick)
     if success==0:
         tick='AMZN'
