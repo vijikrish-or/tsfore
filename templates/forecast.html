@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Forecasting ticker</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.15/c3.min.js"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/static/styles/stockstyle.css">
+    </head>
+
+    <body>
+
+       <form action="/homesite" method="post">
+            <div>
+                <button id="ht" type="submit" title="Go home">Home</button>
+            </div>
+        </form>
+        
+        <br>
+        <h1>Forecasting accuracy and future forecast range:</h1>
+        <table style="width:100%; " id="tab">
+            <tr>
+              <th>Forecast Method</th>
+              <th>sMAPE</th>
+              <th>Future 5 Day Prediction Min</th>
+              <th>Future 5 Day Prediction High</th>
+            </tr>
+            <tr>
+              <td>Naive Forecast</td>
+              <td>{{naive_acc}}</td>
+              <td>{{min_naive}}</td>
+              <td>{{max_naive}}</td>
+            </tr>
+            <tr>
+                <td>Polynomial Forecast</td>
+                <td>{{poly_acc}}</td>
+                <td>{{min_poly}}</td>
+                <td>{{max_poly}}</td>
+            </tr>
+            <tr>
+                <td>Ensemble Forecast</td>
+                <td>{{ensem_acc}}</td>
+                <td>{{min_ensem}}</td>
+                <td>{{max_ensem}}</td>
+            </tr>
+            <tr>
+                <td>Reduced Regression Forecast</td>
+                <td>{{redreg_acc}}</td>
+                <td>{{min_redreg}}</td>
+                <td>{{max_redreg}}</td>
+            </tr>
+          </table>
+
+        <form action="/forecast" method="post">
+            <div>
+                <div id="ticbar" style="color:wheat; background-color:blue">
+                    <h1 id="tickerbar">{{ tick }}</h1> 
+                </div>
+               <!-- <button id="ft" type="submit" title="Builds multiple forecast model for close">Build Forecast Model</button>-->
+            </div>
+        </form>
+        <br>
+        <br>
+
+        <div style="border:1px solid #000000; margin-left:50px; margin-right:50px; border-radius:5px;">
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            
+            var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            //mixed charts require overall type to be bar. Otherwise, individual dataset type isn't honored
+            type: 'line',
+            data: {
+                labels:  {{ datelist  | safe }}, //test date list
+                    datasets: [{
+                        type: 'line',
+                        label: 'Actual Close',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        yAxisID: 'A',
+                        fill: false,
+                        data: {{ y_test_list }}
+                    },
+                {
+                    type: 'line',
+                    label:'Naive Forecast',
+                    backgroundColor: 'rgb(120, 115, 132)',
+                    borderColor: 'rgb(120, 115, 132)',
+                    yAxisID: 'A',
+                    fill: false,
+                    data:{{ y_pred_naive_list }}
+                },
+                {
+                    type: 'line',
+                    label:'Polynomial Forecast',
+                    backgroundColor: 'rgb(50, 115, 255)',
+                    borderColor: 'rgb(50, 115, 255)',
+                    yAxisID: 'A',
+                    fill: false,
+                    data:{{ y_pred_poly_list }}
+                },
+                {
+                    type: 'line',
+                    label:'Ensemble Forecast',
+                    backgroundColor: 'rgb(115, 65, 115)',
+                    borderColor: 'rgb(115, 65, 115)',
+                    yAxisID: 'A',
+                    fill: false,
+                    data:{{ y_pred_ensem_list }}
+                },
+                {
+                    type: 'line',
+                    label:'Reduced Regression Forecast',
+                    backgroundColor: 'rgb(48, 47, 99)',
+                    borderColor: 'rgb(48, 47, 99)',
+                    yAxisID: 'A',
+                    fill: false,
+                    data:{{ y_pred_redreg_list }},
+                    //type:'bar'
+                }
+                ]
+            },
+            options: {
+                    scales: {
+                            yAxes: [{
+                            id: 'A',
+                            type: 'linear',
+                            position: 'left',
+                        }]
+                    }
+                }
+        });
+        </script>
+
+
+    </body>
+</html>

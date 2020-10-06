@@ -1,0 +1,55 @@
+h1{
+    font-family:Arial;
+    text-align:left;
+    
+}
+
+#bt{
+    color:white;
+    background-color: black;
+    width: 200px;
+    
+}
+
+#tickerid{
+    width:300px;
+    /*margin-left: 200px;
+    margin-top:50px;*/
+}
+
+#tickerbar{
+    margin-top:50px;
+}
+
+#ft{
+    color:white;
+    background-color: black;
+    width: 200px;
+    float:right; 
+}
+
+#ht{
+    color:white;
+    background-color: black;
+    width: 200px;
+    float:right; 
+}
+
+#ticbar{
+    /*width:1000px;*/
+}
+
+table, th, td{
+    border: 1px solid black;
+}
+
+table{
+    margin-left:10px;
+    margin-right:450px;
+}
+
+td{
+    text-align:left;
+    width:1%;
+    white-space:nowrap;
+}
