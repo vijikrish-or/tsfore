@@ -17,9 +17,9 @@ currtick='AMZN'
 
 #connect to db
 #following line is to connect to local database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:Postg#123@localhost/stockdb'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:Postg#123@localhost/stockdb'
 #following line is to connect to heroku's postgres database - copied from var settings on heroku
-#app.config['SQLALCHEMY_DATABASE_URI']='postgres://vsaykqnctpdole:5deaa00920aa7874264c87e530fb7f0845f42de1f02e4375b704002cefc4b34d@ec2-3-224-97-209.compute-1.amazonaws.com:5432/d9lplpfhur53rq'
+app.config['SQLALCHEMY_DATABASE_URI']='postgres://vbiziaiwqvfwwa:6d3ffc8b46ee383ffadf643246b843ef0540c7e0fc06c865d9000b28a157eb5f@ec2-54-165-164-38.compute-1.amazonaws.com:5432/d9iu3fcgvh8tc6'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 db=SQLAlchemy(app)
